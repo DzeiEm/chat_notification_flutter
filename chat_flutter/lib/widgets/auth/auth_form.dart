@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:chat_flutter/widgets/picker/user_picker_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFn, this.isLoading);
 
-  final Function(String email, String userName, String password, bool isLogin,
+  final Function(String email, String userName, File image, String password, bool isLogin,
       BuildContext context) submitFn;
 
   bool isLoading = false;
@@ -16,16 +20,35 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   String _userEmail = '';
   String _userName = '';
+  File image;
   String _userPassword = '';
   var _isLogin = true;
+  var _userImageFile;
+
+  void _pickedImage(File image) {
+    _userImageFile = image;
+  }
 
   void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
 
+    // validacija image'ui.. 
+    // jis turi buti supildytas atvejuosee, kai jis yra tuscias ir 'create new user' atveji.
+
+    if (_userImageFile == null && !_isLogin) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please, pick an image'),
+          backgroundColor: Colors.teal,
+        ),
+      );
+      return;
+    }
+
     if (isValid) {
       _formKey.currentState.save();
-      widget.submitFn(_userEmail.trim(), _userName.trim(), _userPassword.trim(),
+      widget.submitFn(_userEmail.trim(), _userName.trim(), _userImageFile, _userPassword.trim(),
           _isLogin, context);
     }
   }
@@ -42,6 +65,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value) {

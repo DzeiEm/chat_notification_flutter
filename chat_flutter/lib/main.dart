@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             // hasData - yra token'as...jei randa ta token'a reiskia user'i autentikuoja iskart
             //jei neranda - tad praso autentikuotis.
             if (userSnapshot.hasData) {
-              return ChatScreen();
+              return AuthScreen();
             }
             return AuthScreen();
           },
