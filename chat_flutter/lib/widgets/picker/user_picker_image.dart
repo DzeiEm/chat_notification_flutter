@@ -14,15 +14,22 @@ class UserImagePicker extends StatefulWidget {
 
 class _UserImagePickerState extends State<UserImagePicker> {
   File _pickedImage; // kur saugom
+  final picker = ImagePicker();
 
   void _pickImage() async {
-    final pickedImageFile = await ImagePicker.pickImage(
-        source: ImageSource.camera, 
-        imageQuality: 50, // galima pasirinktis tarp 0 ir 100. imam 50 kad image'as svertu maziau
-        maxWidth: 150 ,
-        ); // isrinktas image'as
+    final pickedImageFile = await picker.getImage(
+      source: ImageSource.camera,
+      imageQuality:
+          50, // galima pasirinktis tarp 0 ir 100. imam 50 kad image'as svertu maziau
+      maxWidth: 150,
+    ); // isrinktas image'as
+
     setState(() {
-      _pickedImage = pickedImageFile;
+      if (pickedImageFile != null) {
+        _pickedImage = File(pickedImageFile.path);
+      } else {
+        print('no image selected');
+      }
     });
     widget.imagePickFn(
         _pickedImage); // paduodam issaugota image 'a i auth screen'a

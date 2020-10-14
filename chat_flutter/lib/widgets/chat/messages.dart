@@ -8,6 +8,7 @@ class Messages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
+    
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('chat')
@@ -19,10 +20,11 @@ class Messages extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final chatDocs = chatSnapshot.data.document;
+        List chatDocs = chatSnapshot.data.documents;
+
         return ListView.builder(
-          reverse: true, // nuo apacios i virsu pildosi textas
-          itemCount: chatDocs.lenght,
+          scrollDirection: Axis.vertical,
+          itemCount: chatDocs.length,
           itemBuilder: (ctx, index) => MessageBubble(
             chatDocs[index].data()['text'],
             chatDocs[index].data()['username'],
@@ -30,6 +32,7 @@ class Messages extends StatelessWidget {
             chatDocs[index].data()['userId'] == user.uid,
             key: ValueKey(chatDocs[index].id),
           ),
+          reverse: true, // nuo apacios i virsu pildosi textas
         );
       },
     );

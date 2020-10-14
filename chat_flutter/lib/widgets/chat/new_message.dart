@@ -8,24 +8,26 @@ class NewMessage extends StatefulWidget {
 }
 
 class _NewMessageState extends State<NewMessage> {
-  var _enteredMessage = '';
   final _controller = TextEditingController();
+  var _enteredMessage = '';
 
   void _sendMessage() async {
     FocusScope.of(context).unfocus(); // uzdaro keyboarda
-    final user = await FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
+
     final userData = await FirebaseFirestore.instance
         .collection('users')
-        .doc(user.uid)
-        .get();
+        .doc(user.uid).get();
 
-    FirebaseFirestore.instance.collection('chat').add({
-      'text': _enteredMessage,
-      'createdAt': Timestamp.now(), // kada
-      'userId': user.uid, //kiekvino user'io info
-      'username': userData.data()['username'],
-      'userImage': userData['image_url'],
-    });
+    FirebaseFirestore.instance
+        .collection('chat')
+        .add({
+          'text': _enteredMessage,
+          'createdAt': Timestamp.now(), // kada
+          'userId': user.uid, //kiekvino user'io info
+          'username': userData.data()['username'],
+          'userImage': userData.data()['image_url'],
+        });
     _controller
         .clear(); // istrina texta kuris buvo parasytas eiluteje, kaip zinute.
   }

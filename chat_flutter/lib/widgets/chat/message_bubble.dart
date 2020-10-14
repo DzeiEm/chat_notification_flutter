@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
+  final Key key;
   final String message;
-  bool isMe;
-  final key;
-  String username;
+  final String username;
   final userImage;
+  final bool isMe;
+  
   MessageBubble(this.message, this.username, this.userImage, this.isMe,
       {this.key});
 

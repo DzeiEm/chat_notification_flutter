@@ -38,10 +38,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat'),
+        title: Text('Chatty'),
         actions: [
           DropdownButton(
-            underline: Container(), // uzdedam sita tam, kad nematyti linijos chat screen'e(virsuj) prie 3u taskeliu
+            underline:
+                Container(), // uzdedam sita tam, kad nematyti linijos chat screen'e(virsuj) prie 3u taskeliu
             icon: Icon(Icons.more_vert),
             items: [
               DropdownMenuItem(
