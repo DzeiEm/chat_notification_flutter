@@ -23,7 +23,8 @@ class _NewMessageState extends State<NewMessage> {
       'text': _enteredMessage,
       'createdAt': Timestamp.now(), // kada
       'userId': user.uid, //kiekvino user'io info
-      'username': userData['username'],
+      'username': userData.data()['username'],
+      'userImage': userData['image_url'],
     });
     _controller
         .clear(); // istrina texta kuris buvo parasytas eiluteje, kaip zinute.
@@ -40,6 +41,9 @@ class _NewMessageState extends State<NewMessage> {
             child: TextField(
               controller: _controller,
               decoration: InputDecoration(labelText: 'Send message'),
+              textCapitalization: TextCapitalization.sentences,
+              autocorrect: true,
+              enableSuggestions: true,
               onChanged: (value) {
                 setState(() {
                   _enteredMessage = value;

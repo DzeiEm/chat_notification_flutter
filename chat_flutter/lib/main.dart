@@ -1,5 +1,6 @@
 import 'package:chat_flutter/screens/auth_screen.dart';
 import 'package:chat_flutter/screens/chat_screen.dart';
+import 'package:chat_flutter/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,11 @@ class MyApp extends StatelessWidget {
           builder: (ctx, userSnapshot) {
             // hasData - yra token'as...jei randa ta token'a reiskia user'i autentikuoja iskart
             //jei neranda - tad praso autentikuotis.
+            if(userSnapshot.connectionState == ConnectionState.waiting){
+              return SplashScreen();
+            }
             if (userSnapshot.hasData) {
-              return AuthScreen();
+              return ChatScreen();
             }
             return AuthScreen();
           },

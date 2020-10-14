@@ -18,17 +18,18 @@ class _AuthScreenState extends State<AuthScreen> {
 
   void _submitAuthForm(String email, String username,
       File image,String password, bool isLogin, BuildContext ctx) async {
-    var authResult;
+    
+    UserCredential userCredential;
 
     try {
       setState(() {
         _isLoading = true;
       });
       if (isLogin) {
-        authResult = await _auth.signInWithEmailAndPassword(
+        userCredential = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
       } else {
-        authResult = await _auth.signInWithEmailAndPassword(
+        userCredential = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
 
         //reikia irasytti image'a anksciau uz visus kitus duomenys
@@ -39,7 +40,7 @@ class _AuthScreenState extends State<AuthScreen> {
         final ref = FirebaseStorage.instance
             .ref()
             .child('user-images')
-            .child(authResult.user.uid + '.jpeg');
+            .child(userCredential.user.uid + '.jpeg');
         await ref
             .putFile(image)
             .onComplete; // tai nera future, todel turim padaryti future, nes turi susiuploadinti.
@@ -48,7 +49,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
         await FirebaseFirestore.instance
             .collection('users')
-            .doc(authResult.user.uid)
+            .doc(userCredential.user.uid)
             .set({
           'username': username,
           'email': email,

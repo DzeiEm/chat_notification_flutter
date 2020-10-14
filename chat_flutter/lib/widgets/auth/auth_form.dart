@@ -79,6 +79,9 @@ class _AuthFormState extends State<AuthForm> {
                     },
                     decoration: InputDecoration(hintText: 'email'),
                     keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
+                    enableSuggestions: false,
                     onSaved: (value) {
                       _userEmail = value;
                     },
@@ -95,6 +98,8 @@ class _AuthFormState extends State<AuthForm> {
                       },
                       decoration: InputDecoration(hintText: 'user name'),
                       keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.words, // rasys dideliom raidem kiekciena zodi
+                      enableSuggestions: false,
                       onSaved: (value) {
                         _userName = value;
                       },
